@@ -5,10 +5,15 @@ defmodule AdventOfCode.Day01Test do
 
   @tag :skip
   test "part1" do
-    input = nil
+    input = [1721,
+             979,
+             366,
+             299,
+             675,
+             1456]
     result = part1(input)
 
-    assert result
+    assert result == [299, 1721]
   end
 
   @tag :skip

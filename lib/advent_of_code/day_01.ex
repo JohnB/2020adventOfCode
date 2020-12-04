@@ -1,14 +1,16 @@
 defmodule AdventOfCode.Day01 do
-  Target 2020
-
   def part1(args) do
     first_number =
         args
-        |> Enum.find(fn(number) -> Enum.member?(args, Target - number) end)
+        |> Enum.find(fn(number) -> Enum.member?(args, 2020 - number) end)
 
-    [first_number, Target - first_number]
+    second_number = 2020 - first_number
+    result = first_number * second_number
+    IO.puts("#{first_number} + #{second_number} == #{result}")
+
+    result
   end
 
-  def part2(args) do
+  def part2(_args) do
   end
 end

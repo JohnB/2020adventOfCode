@@ -5,13 +5,14 @@ defmodule Mix.Tasks.D02.P1 do
 
   @shortdoc "Day 02 Part 1"
   def run(args) do
+#    input = "
+#1-3 a: abcde
+#1-3 b: cdefg
+#2-9 c: ccccccccc
+#"
+
     input = "
-1-3 a: abcde
-1-3 b: cdefg
-2-9 c: ccccccccc
-"
-    input = "
-    9-12 q: qqqxhnhdmqqqqjz
+9-12 q: qqqxhnhdmqqqqjz
 12-16 z: zzzzzznwlzzjzdzf
 4-7 s: sssgssw
 13-14 p: pppqzpppppppfpppp

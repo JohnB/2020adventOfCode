@@ -14,16 +14,17 @@ defmodule AdventOfCode.Day03 do
 #    # and following a slope of right 3 and down 1,
 #    # how many trees would you encounter?
 
-  def count_collisions(string, delta_x, _delta_y) do
+  def count_collisions(string, delta_x, delta_y) do
     %{trees_hit: trees_hit} =
       string
       |> String.trim()
       |> String.split("\n")
-      |> Enum.reduce(%{trees_hit: 0, x: 0}, fn(line, acc) ->
-        case String.slice(line, Integer.mod(acc.x, String.length(line)), 1) do
-          "." -> %{trees_hit: acc.trees_hit    , x: acc.x + delta_x}
-          "#" -> %{trees_hit: acc.trees_hit + 1, x: acc.x + delta_x}
-#          _ -> acc # should never happen - watch it crash
+      |> Enum.reduce(%{trees_hit: 0, x: 0, y: 0}, fn(line, %{trees_hit: trees_hit, x: x, y: y}) ->
+        current_square = (Integer.mod(y, delta_y) == 0) && String.slice(line, Integer.mod(x, String.length(line)), 1) ||"x"
+        case current_square do
+          "." -> %{trees_hit: trees_hit    , x: x + delta_x, y: y + 1}
+          "#" -> %{trees_hit: trees_hit + 1, x: x + delta_x, y: y + 1}
+          "x" -> %{trees_hit: trees_hit    , x: x,           y: y + 1} # skipped row
         end
       end)
 
@@ -35,10 +36,12 @@ defmodule AdventOfCode.Day03 do
   end
 
   def part2(args) do
-    count_collisions(args, 1, 1) *
-    count_collisions(args, 3, 1) *
-    count_collisions(args, 5, 1) *
-    count_collisions(args, 7, 1) *
-    count_collisions(args, 3, 2)
+    c11 = count_collisions(args, 1, 1)
+    c31 = count_collisions(args, 3, 1)
+    c51 = count_collisions(args, 5, 1)
+    c71 = count_collisions(args, 7, 1)
+    c12 = count_collisions(args, 1, 2)
+
+    c11 * c31 * c51 * c71 * c12
   end
 end

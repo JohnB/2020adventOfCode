@@ -15,7 +15,6 @@ defmodule AdventOfCode.Day05 do
         |> String.replace("R", "1")
         |> Integer.parse(2)
       seatID = 8 * row + column
-      IO.inspect([line, row, column, seatID])
 
       [line, row, column, seatID]
     end)

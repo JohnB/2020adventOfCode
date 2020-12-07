@@ -1,8 +1,13 @@
 defmodule AdventOfCode.Day07 do
+  def parse_rules(rules) do
+  end
+
   def part1(args) do
-    args
+    rules = parse_rules(args)
+    rules
     |> String.trim
-    |> String.split("\n\n")
+    |> String.split("\n")
+    |> String.split("\n")
   end
 
   def part2(_args) do

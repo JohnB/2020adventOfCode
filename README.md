@@ -95,3 +95,14 @@ $ git init
 1. On GitHub, navigate to the main page of the repository.
 1. Under the repository name, use the  Code drop-down menu, and select Open with Codespaces.
 1. If you already have a codespace for the branch, click  New codespace.
+
+### Helpers 
+NOTE: Put in a separate PR if first PR is accepted.
+Adding `import AdventOfCode` provides:
+* `get_input(day_string, args)`
+* `as_single_lines(args)`
+* `as_doublespaced_paragraphs(args)`
+* `as_paragraph_lines(paragraph)`
+* `delimited_by_spaces(text)`
+* `delimited_by_colons(text)`
+* `split_at_intervals(chars, interval_lengths)`

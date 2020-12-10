@@ -1,12 +1,12 @@
 defmodule Mix.Tasks.D11.P2 do
   use Mix.Task
 
+  import AdventOfCode
   import AdventOfCode.Day11
 
   @shortdoc "Day 11 Part 2"
   def run(args) do
-    #input = File.read!('lib/mix/tasks/d11.example.txt')
-    input = File.read!('lib/mix/tasks/d11.input.txt')
+    input = get_input("11", args)
 
     if Enum.member?(args, "-b"),
       do: Benchee.run(%{part_2: fn -> input |> part2() end}),

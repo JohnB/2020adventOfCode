@@ -1,7 +1,14 @@
 defmodule AdventOfCode.Day11 do
-  def part1(_args) do
+  import AdventOfCode
+
+  def part1(args) do
+    something =
+      as_single_lines(args)
+
   end
 
-  def part2(_args) do
+  def part2(args) do
+    something =
+      as_single_lines(args)
   end
 end

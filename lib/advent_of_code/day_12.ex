@@ -57,7 +57,7 @@ defmodule AdventOfCode.Day12 do
 
   ###
 
-  def wleft(acc = %{dir: dir, x: x, y: y, wx: wx, wy: wy}, angle) do
+  def wleft(acc = %{wx: wx, wy: wy}, angle) do
     l90 = %{acc | wx: -wy, wy: wx}
 
     case angle do
@@ -66,7 +66,7 @@ defmodule AdventOfCode.Day12 do
     end
   end
 
-  def wright(acc = %{dir: dir, x: x, y: y, wx: wx, wy: wy}, angle) do
+  def wright(acc = %{wx: wx, wy: wy}, angle) do
     r90 = %{acc | wx: wy, wy: -wx}
 
     case angle do
@@ -75,7 +75,7 @@ defmodule AdventOfCode.Day12 do
     end
   end
 
-  def to_waypoint(acc = %{dir: dir, x: x, y: y, wx: wx, wy: wy}, multiplier) do
+  def to_waypoint(acc = %{x: x, y: y, wx: wx, wy: wy}, multiplier) do
     %{acc | x: x + wx * multiplier, y: y + wy * multiplier}
     |> IO.inspect(label: "moved")
   end
@@ -84,7 +84,7 @@ defmodule AdventOfCode.Day12 do
     start = %{dir: "E", x: 0, y: 0, wx: 10, wy: 1}
 
     result = as_single_lines(args)
-    |> Enum.reduce(start, fn(line, acc = %{dir: dir, x: x, y: y, wx: wx, wy: wy}) ->
+    |> Enum.reduce(start, fn(line, acc = %{wx: wx, wy: wy}) ->
         IO.inspect([line, acc], label: "? ")
         code = String.slice(line, 0, 1)
 

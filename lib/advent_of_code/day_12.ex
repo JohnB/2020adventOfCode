@@ -58,7 +58,6 @@ defmodule AdventOfCode.Day12 do
   ###
 
   def wleft(acc = %{dir: dir, x: x, y: y, wx: wx, wy: wy}, angle) do
-    # s: 2,1 w: 5, 3  => w: 0, 4 (x+wy-y, y+wx-x)
     l90 = %{acc | wx: -wy, wy: wx}
 
     case angle do
@@ -68,7 +67,6 @@ defmodule AdventOfCode.Day12 do
   end
 
   def wright(acc = %{dir: dir, x: x, y: y, wx: wx, wy: wy}, angle) do
-    # s: 2,1 w: 5,3  => w: 4,-2 (x+wy-y, y-wx+x)
     r90 = %{acc | wx: wy, wy: -wx}
 
     case angle do
@@ -78,9 +76,6 @@ defmodule AdventOfCode.Day12 do
   end
 
   def to_waypoint(acc = %{dir: dir, x: x, y: y, wx: wx, wy: wy}, multiplier) do
-    # dx = wx - x
-    # dy = wy - y
-    # %{acc | x: x + dx * multiplier, y: y + dy * multiplier}
     %{acc | x: x + wx * multiplier, y: y + wy * multiplier}
     |> IO.inspect(label: "moved")
   end

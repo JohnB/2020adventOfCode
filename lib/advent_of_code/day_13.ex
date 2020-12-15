@@ -43,40 +43,46 @@ defmodule AdventOfCode.Day13 do
       |> Enum.sort_by(fn({bus, arrival}) -> arrival end )
       |> IO.inspect
 
-      # example
+    {first_bus, _} = List.first(buses)
+                     |> IO.inspect
+
+    # example
       #    [{7, 0}, {13, 1}, {59, 4}, {31, 6}, {19, 7}]
       #
       #     Enum.sort
       #   [{7, 0}, {13, 1}, {19, 7}, {31, 6}, {59, 4}]
+      # I was able to brute-force this answer by uncommenting:
+      # find_result(first_bus, buses, 0)
+      # find_result(first_bus, buses, 0)
 
-# real input
-#      by_arrival =
-#      [
-#        {19, 0},
-#        {41, 9},
-#        {643, 19}, #
-#        {17, 36},  # 4 x 9
-#        {13, 37},
-#        {23, 42},  # 2 * 3 * 7
-#        {509, 50},
-#        {37, 56},
-#        {29, 79}
-#      ]
-      start = 19 * (643 - 1)
-      increments = 643
+    # real input result at this point is this table of primes and
+    # remainders
+    # https://brilliant.org/wiki/chinese-remainder-theorem/
+    #
+    #  {643, 19}    643j + 19 = 50 mod 509
+    #                 j == 80 (mod 509)  [or so Wolfram alpha says]
+    #  {509, 50},   643(509k + 50) + 19 = 9 mod 41
+    #                 k = 1  (mod 37)
+    #               643(509(41l + 9) + 50) + 19 = 56 mod 37
+    #                 l = 31 (mod 37)
+    #  {41, 9},     643(509(41(37m + 56) + 9) + 50) + 19 = 79 mod 29
+    #                 m = 1
+    #  {37, 56},    643(509(41(37(29n + 79) + 56) + 9) + 50) + 19 = 42 mod 23
+    #                 n = 16
+    #  {29, 79},    643(509(41(37(29(23o + 42) + 79) + 56) + 9) + 50) + 19 = 0 mod 19
+    #                 o = 17
+    #  {23, 42},    643(509(41(37(29(23(19p + 0) + 42) + 79) + 56) + 9) + 50) + 19 = 36 mod 17
+    #                 p = 7
+    #  {19, 0},     643(509(41(37(29(23(19(17q + 36) + 0) + 42) + 79) + 56) + 9) + 50) + 19 = 37 mod 13
+    #  {17, 36},      q = 5
+    #  {13, 37},    761985572711374 (too high)
+    # supposedly higher than:
+    #               100000000000000
+    #               1390548191579807
+    #               106965245506139
+    # https://www.geeksforgeeks.org/chinese-remainder-theorem-set-2-implementation/
 
 
-    #    foo = [
-#    foo = [
-    #  {13, 37},
-    #  {17, 36},
-    #  {19, 0},
-    #  {23, 42},
-    #  {29, 79},
-    #  {37, 56},
-    #  {41, 9},
-    #  {509, 50},
-    #  {643, 19}
     # all the buses are prime, so the time between timestamps is
     # the product of them all
     # and the distance "back" to t is
@@ -94,10 +100,9 @@ defmodule AdventOfCode.Day13 do
 #    ]
 
 
-    {first_bus, _} = List.first(buses)
-                     |> IO.inspect
+#    find_result(first_bus, buses, 0)
 #    find_result(first_bus, buses, 1730426330)
-    #find_result(first_bus, buses, 99999999999984)
+    find_result(first_bus, buses, 100040434744591)
   end
 
 

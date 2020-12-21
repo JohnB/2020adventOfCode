@@ -4,6 +4,7 @@ defmodule AdventOfCode.Day18 do
   # Cribbed from https://stackoverflow.com/questions/14952113/how-can-i-match-nested-brackets-using-regex
   @paren_matcher ~r/(\(([^()]|(?R))*\))/
 
+  # Solution: 14208061823964
   def part1(args) do
     IO.puts("Expected example output: 71, 51, 26, 437, 12240, 13632")
     _result =
@@ -11,59 +12,80 @@ defmodule AdventOfCode.Day18 do
       |> Enum.map(fn(line) ->
         IO.puts("----")
         line
-        |> solve1line()
+        |> String.replace(~r/\s+/, "")
+        |> IO.inspect()
+        |> recurse_until_solved()
+        |> String.to_integer()
       end)
       |> IO.inspect(label: "done?")
-#      |> calculate()
-#      |> Enum.sum
+      |> Enum.sum
   end
 
-  def solve1line(line) do
-    line
-    |> String.replace(~r/\s+/, "")
-    |> IO.inspect()
-    |> evaluate()
-  end
-
-  def evaluate(line) do
-    IO.inspect(line, label: "evaluate")
-    case Regex.match?(~r/^\d+$/, line) do
-      true -> String.to_integer(line)
-      _ -> solve(line)
+  def recurse_until_solved(line) do
+    case Regex.match?( ~r/\(/, line) do
+      true -> solve_parens(line) |> solve_equation()
+      _ -> solve_equation(line)
     end
   end
 
-  def solve(line) do
-    case Regex.match?(~r/^\d+(\+|\*)\d+/, line) do
-      true -> calculate(line)
-      _ -> Regex.replace(@paren_matcher, line, fn(full, match) -> solve1line(String.slice(full, 1..-2)) end)
+  def solve_parens(line) do
+    Regex.replace(@paren_matcher, line, fn(full, match) ->
+      recurse_until_solved(String.slice(full, 1..-2))
+    end)
+  end
+
+  def solve_equation(line) do
+    IO.inspect(line)
+    {num1, rest} = Integer.parse(line)
+    op = String.slice(rest, 0, 1)
+    {num2, rest2} = (op == "") && {nil, nil} || Integer.parse(String.slice(rest, 1..-1))
+    case op do
+      "+" -> solve_equation("#{num1 + num2}#{rest2}")
+      "*" -> solve_equation("#{num1 * num2}#{rest2}")
+      "" -> "#{num1}"
     end
-#    |> solve()
   end
 
-  def calculate(match) do
-    {num1, rest} = Integer.parse(match)
-    IO.inspect({num1, rest}, label: "calculate")
-    "#{calc(num1, rest)}"
-    |> IO.inspect(label: "end Calculate")
-  end
-
-  def calc(num1, "*" <> num2) do
-    {num2, rest} = Integer.parse(num2)
-    calc(num1 * num2, rest)
-  end
-  def calc(num1, "+" <> num2) do
-    {num2, rest} = Integer.parse(num2)
-    calc(num1 + num2, rest)
-  end
-  def calc(num, "") do
-    num
-  end
-  def calc(num) do
-    num
-  end
+  ####################
 
   def part2(args) do
-    result = as_single_lines(args)
+    IO.puts("Expected example output: 231, 51, 46, 1445, 669060, 23340")
+    _result =
+      as_single_lines(args)
+      |> Enum.map(fn(line) ->
+        IO.puts("----")
+        line
+        |> String.replace(~r/\s+/, "")
+        |> IO.inspect()
+        |> recurse_until_solved2()
+        |> String.to_integer()
+      end)
+      |> IO.inspect(label: "done?")
+      |> Enum.sum
+  end
+
+  def recurse_until_solved2(line) do
+    case Regex.match?( ~r/\(/, line) do
+      true -> solve_parens2(line) |> solve_equation2()
+      _ -> solve_equation2(line)
+    end
+  end
+
+  def solve_parens2(line) do
+    Regex.replace(@paren_matcher, line, fn(full, match) ->
+      recurse_until_solved2(String.slice(full, 1..-2))
+    end)
+  end
+
+  def solve_equation2(line) do
+    IO.inspect(line)
+    Regex.match?(~r/\+/, line) &&
+      Regex.replace(~r/(\d+)\+(\d+)/, line, fn(match) ->
+        [x,y] = String.split(match, "+")
+        x = String.to_integer(x)
+        y = String.to_integer(y)
+        "#{x+y}"
+      end, global: false) |> solve_equation2() ||
+      solve_equation(line)
   end
 end

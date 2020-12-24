@@ -23,7 +23,7 @@ defmodule AdventOfCode do
   # as_single_lines(args, fn(line) -> end)
   def as_single_lines(multiline_text) do
     multiline_text
-    |> String.split("\n")
+    |> String.split("\n", trim: true)
   end
 
   # as_doublespaced_paragraphs(args, fn(paragraph) -> end)
